@@ -1,0 +1,22 @@
+{
+  "name": "HorizontalList",
+  "version": "0.1.0",
+  "summary": "A container that presents horizontal scrollable view.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/denisshalagin/HorizontalList",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Denis Shalagin": "d.shalagin@distillery.com"
+  },
+  "source": {
+    "git": "https://github.com/DistilleryTech/HorizontalList.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source_files": "HorizontalList/Classes/**/*"
+}

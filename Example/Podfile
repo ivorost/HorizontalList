@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'HorizontalList_Example' do
+  pod 'HorizontalList', :path => '../'
+end

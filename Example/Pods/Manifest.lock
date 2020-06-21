@@ -1,0 +1,16 @@
+PODS:
+  - HorizontalList (0.1.0)
+
+DEPENDENCIES:
+  - HorizontalList (from `../`)
+
+EXTERNAL SOURCES:
+  HorizontalList:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  HorizontalList: 02436daeae4f37a6d54930e68ad68330307a4566
+
+PODFILE CHECKSUM: d8b6a2cfccfc7ae61f1c735a6e3666ff45545286
+
+COCOAPODS: 1.9.1
