@@ -8,7 +8,11 @@
 
 import SwiftUI
 
-public struct HorizontalList<Content, Data> : View where Content : View, Data: RandomAccessCollection {
+fileprivate func max(_ p1: CGPoint, _ p2: CGPoint) -> CGPoint {
+    return CGPoint(x: max(p1.x, p2.x), y: max(p1.y, p2.y))
+}
+
+public struct HList<Content, Data> : View where Content : View, Data: RandomAccessCollection {
     
     // MARK: - Constants
     
@@ -22,23 +26,17 @@ public struct HorizontalList<Content, Data> : View where Content : View, Data: R
     
     private let data: [Data.Element]
     private let itemContent: (Data.Element) -> Content
-    
     private let model = HorizontalListModel<Content>()
-    private var scrollAnimator = HorizontalListScrollAnimator()
-    
-    var contentOffset: CGFloat {
-        return safeOffset(x: offset + dragOffset)
-    }
     
     // MARK: - State
     
     @State private var visibleIndices: ClosedRange<Int> = 0...0
     @State private var rects: [Int: CGRect] = [:]
-    @State private var offset: CGFloat = 0
-    @State private var dragOffset: CGFloat = 0
-    @State private var maxOffset: CGFloat?
-    @State private var animationTimer = Timer.publish (every: 1/60, on: .current, in: .common).autoconnect()
-    
+    @State private var scrollOffset = CGPoint.zero
+    @State private var visibleItemsOffset = CGPoint.zero
+    @State private var contentSize = CGSize.zero
+    @State private var geometry: GeometryProxy?
+
     // MARK: - Initialization
     
     public init(_ data: Data, @ViewBuilder itemContent: @escaping (Data.Element) -> Content) {
@@ -58,83 +56,52 @@ public struct HorizontalList<Content, Data> : View where Content : View, Data: R
     // MARK: - View
     
     public var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                if !self.data.isEmpty {
-                    ForEach(self.visibleIndices, id: \.self) { index in
-                        self.makeView(atIndex: index)
-                    }
-                }
-            }
-            .gesture(
-                TapGesture()
-                    .onEnded({ _ in
-                        // Stop scroll animation on tap
-                        self.scrollAnimator.stop()
-                        self.animationTimer.upstream.connect().cancel()
-                    }))
-                .gesture(
-                    DragGesture()
-                        .onChanged({ value in
-                            // Scroll by dragging
-                            self.dragOffset = -value.translation.width
-                            self.updateVisibleIndices(geometry: geometry)
-                        })
-                        .onEnded({ value in
-                            let predictedWidth = value.predictedEndTranslation.width * 0.75
-                            if abs(predictedWidth) - abs(self.dragOffset) > geometry.size.width / 2 {
-                                // Scroll with animation to predicted offset
-                                self.dragOffset = 0
-                                
-                                self.scrollAnimator.start(from: self.offset, to: (self.offset - predictedWidth), duration: 2)
-                                self.animationTimer = Timer.publish (every: 1/60, on: .current, in:.common).autoconnect()
-                            } else {
-                                // Save dragging offset
-                                self.offset = self.safeOffset(x: self.offset + self.dragOffset)
-                                self.dragOffset = 0
-                                
-                                self.updateVisibleIndices(geometry: geometry)
+        GeometryReader { scrollViewGeometry in
+            ObservableScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    Spacer()
+                        .frame(width: visibleItemsOffset.x)
+
+                    HStack(spacing: 0) {
+                        if !self.data.isEmpty {
+                            ForEach(self.visibleIndices, id: \.self) { index in
+                                self.makeView(atIndex: index)
                             }
-                        }))
-                .onPreferenceChange(ViewRectPreferenceKey.self) { preferences in
-                    // Update subviews rects
-                    for preference in preferences {
-                        var rect = preference.rect
-                        if let prevRect = self.rects[preference.index - 1] {
-                            rect = CGRect(x: prevRect.maxX, y: rect.minY, width: rect.width, height: rect.height)
-                        }
-                        
-                        self.rects[preference.index] = rect
-                        
-                        // Update max valid offset if needed
-                        if self.maxOffset == nil, let lastRect = self.rects[self.data.count - 1] {
-                            self.maxOffset = max(0, lastRect.maxX - geometry.frame(in: .global).width)
+                            .onPreferenceChange(ViewRectPreferenceKey.self) { preferences in
+                                self.geometry = scrollViewGeometry
+                                
+                                // Update subviews rects
+                                
+                                for preference in preferences {
+                                    var rect = preference.rect
+                                    
+                                    if let prevRect = self.rects[preference.index - 1] {
+                                        rect = CGRect(x: prevRect.maxX,
+                                                      y: rect.minY,
+                                                      width: rect.width,
+                                                      height: rect.height)
+                                    }
+                                    
+                                    rect.origin = max(rect.origin, .zero)
+                                    
+                                    self.rects[preference.index] = rect
+                                }
+                                                                
+                                updateContentSize()
+                                updateVisibleIndices()
+                            }
                         }
                     }
-                    
-                    self.updateVisibleIndices(geometry: geometry)
-            }
-            .onReceive(self.animationTimer) { _ in
-                if self.scrollAnimator.isAnimationFinished {
-                    // We don't need it when we start off
-                    self.animationTimer.upstream.connect().cancel()
-                    return
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .coordinateSpace(name: Constants.coordinateSpaceName)
                 }
-                
-                self.offset = self.scrollAnimator.nextStep()
-                
-                // Check if out of bounds
-                let safeOffset = self.safeOffset(x: self.offset)
-                if self.offset != safeOffset {
-                    self.offset = safeOffset
-                    self.dragOffset = 0
-                    self.animationTimer.upstream.connect().cancel()
-                }
-                
-                self.updateVisibleIndices(geometry: geometry)
+                .frame(width: contentSize.width)
             }
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            .coordinateSpace(name: Constants.coordinateSpaceName)
+            .onScroll { offset in
+                self.scrollOffset = offset
+                self.geometry = scrollViewGeometry
+                updateVisibleIndices()
+            }
         }
     }
     
@@ -142,25 +109,25 @@ public struct HorizontalList<Content, Data> : View where Content : View, Data: R
     
     private func makeView(atIndex index: Int) -> some View {
         let item = data[index]
-        let rect = rects[index] ?? .zero
-        
         var content = model.cachedContent[index]
+
         if content == nil {
             content = itemContent(item)
             model.cachedContent[index] = content
         }
         
         return content
-            .offset(x: rect.minX - contentOffset)
             .background(PreferenceSetterView(index: index, coordinateSpaceName: Constants.coordinateSpaceName))
     }
-    
-    private func updateVisibleIndices(geometry: GeometryProxy) {
+
+    private func updateVisibleIndices() {
+        guard let geometry = self.geometry else { return }
+        
         // Get horizontal list bounds
         let bounds = geometry.frame(in: .named(Constants.coordinateSpaceName))
         
         // Calculate visible frame with offset
-        let visibleFrame = CGRect(x: contentOffset, y: 0, width: bounds.width, height: bounds.height)
+        let visibleFrame = CGRect(x: scrollOffset.x, y: 0, width: bounds.width, height: bounds.height)
         
         // Find indices which intersect visible frame
         var frameIndices: [Int] = []
@@ -182,10 +149,31 @@ public struct HorizontalList<Content, Data> : View where Content : View, Data: R
         
         // Update model with new visible indices
         visibleIndices = firstIndex...lastIndex
+        
+        // update offset
+        
+        if let firstIndex = visibleIndices.first, let firstRect = rects[firstIndex] {
+            visibleItemsOffset = firstRect.origin
+        }
     }
     
-    private func safeOffset(x: CGFloat) -> CGFloat {
-        return x.clamped(to: 0...(maxOffset ?? CGFloat.greatestFiniteMagnitude))
+    private func updateContentSize() {
+        var contentSize = CGSize.zero
+        
+        contentSize = self.rects.reduce(contentSize) {
+            var result = $0
+            
+            if $1.value.maxX > result.width {
+                result.width = $1.value.maxX
+            }
+
+            if $1.value.maxY > result.height {
+                result.height = $1.value.maxY
+            }
+            
+            return result
+        }
+        
+        self.contentSize = contentSize
     }
-    
 }

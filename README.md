@@ -8,13 +8,13 @@
 
 HorizontalList is an efficient SwiftUI horizontal ScrollView which loads only visible elements. HorizontalList subviews could be different size. 
 
-![gif demo](https://github.com/DistilleryTech/HorizontalList/blob/master/demo.gif)
+![gif demo](https://github.com/ivorost/HorizontalList/blob/master/demo.gif)
 
 ## Usage
 
 ```swift
 var body: some View {
-    HorizontalList(0...100000) { index in
+    HList(0...100000) { index in
         Text("\(index)").padding(10)
     }
 }
@@ -32,5 +32,5 @@ HorizontalList is available through [CocoaPods](https://cocoapods.org). To insta
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'HorizontalList'
+pod 'HList'
 ```

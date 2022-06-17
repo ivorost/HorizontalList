@@ -29,13 +29,11 @@ struct ContentView: View {
     // MARK: - View
     
     var body: some View {
-        HorizontalList(0..<items.count) { index in
+        HList(0..<items.count) { index in
             self.makeView(index: index)
                 .frame(width: Constants.itemSize.width, height: Constants.itemSize.height)
                 .padding(10)
         }
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
     }
     
     // MARK: - View Helpers
