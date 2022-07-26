@@ -24,6 +24,7 @@
 		646C0C01EE0828EF7FCF0963 /* Pods-HorizontalList_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HorizontalList_Example.debug.xcconfig"; path = "Target Support Files/Pods-HorizontalList_Example/Pods-HorizontalList_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		798F84D4B8942DCE74547296 /* Pods_HorizontalList_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HorizontalList_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C73DB4945D72B073DE7D905 /* HorizontalList.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = HorizontalList.podspec; path = ../HorizontalList.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		82CD1C9C2881471600700D2C /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		922256262490DF55009A698D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		922256272490DF55009A698D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		922256282490DF55009A698D /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -168,6 +169,7 @@
 			knownRegions = (
 				en,
 				Base,
+				he,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
@@ -254,6 +256,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9222563A2490E033009A698D /* Base */,
+				82CD1C9C2881471600700D2C /* he */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

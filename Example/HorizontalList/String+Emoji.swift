@@ -13,4 +13,11 @@ extension String {
         
         return emoji!
     }
+    
+    static func emoji(index: Int) -> String {
+        let ascii = 0x1F601 + index
+        let emoji = UnicodeScalar(ascii)?.description
+        
+        return emoji!
+    }
 }

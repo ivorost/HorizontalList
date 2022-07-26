@@ -20,20 +20,22 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 
 // A ScrollView wrapper that tracks scroll offset changes.
-struct ObservableScrollView<Content>: View where Content : View {
+public struct ObservableScrollView<Content>: View where Content : View {
     @Namespace var scrollSpace
     
     let content: () -> Content
     var axes: Axis.Set
     var showsIndicators: Bool
 
-    init(_ axes: Axis.Set = .vertical, showsIndicators: Bool = true, @ViewBuilder content: @escaping () -> Content) {
+    public init(_ axes: Axis.Set = .vertical,
+                showsIndicators: Bool = true,
+                @ViewBuilder content: @escaping () -> Content) {
         self.content = content
         self.axes = axes
         self.showsIndicators = showsIndicators
     }
     
-    var body: some View {
+    public var body: some View {
         ScrollView(self.axes, showsIndicators: self.showsIndicators) {
             content()
                 .background(GeometryReader { geometry in
@@ -50,7 +52,7 @@ struct ObservableScrollView<Content>: View where Content : View {
 
 
 extension ObservableScrollView {
-    func onScroll(_ onScroll: @escaping (CGPoint) -> ()) -> some View {
+    public func onScroll(_ onScroll: @escaping (CGPoint) -> ()) -> some View {
         self.onPreferenceChange(ScrollOffsetPreferenceKey.self, perform: onScroll)
     }
 }

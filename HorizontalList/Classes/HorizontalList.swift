@@ -90,6 +90,7 @@ public struct HList<Content, Data> : View where Content : View, Data: RandomAcce
                                 updateContentSize()
                                 updateVisibleIndices()
                             }
+                            .rotation3DEffectForRightToLeftLayoutDirection()
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,6 +103,7 @@ public struct HList<Content, Data> : View where Content : View, Data: RandomAcce
                 self.geometry = scrollViewGeometry
                 updateVisibleIndices()
             }
+            .flipsForRightToLeftLayoutDirection(true)
         }
     }
     

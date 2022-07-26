@@ -10,6 +10,7 @@
 		2B8D26FB4FA3D7E375F6103C1F865D7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		4A2A32B3C84D792E8ECEA6B0DF86EB3E /* Pods-HorizontalList_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F13BC4D21C61033CFA3F9F9DFC6FB4 /* Pods-HorizontalList_Example-dummy.m */; };
 		70AD64639EF071819DB10BFC92B11364 /* HorizontalList-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D1A2C55F2DFA994137A6CF92AE6E817 /* HorizontalList-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		824E11E6288FC78300953EEB /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824E11E5288FC78300953EEB /* View.swift */; };
 		8252A412285C9AB20041E2FA /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252A411285C9AB20041E2FA /* ScrollView.swift */; };
 		84F4F51B233453F50194B2AE9BF1919F /* HorizontalList-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3405F8359F310D2C696A63411B16AA0E /* HorizontalList-dummy.m */; };
 		8F1EF0D3B1AC511FC555D8BE759CC3F5 /* Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = B499CECC74013B62707EBC30A8FA140D /* Clamped.swift */; };
@@ -48,6 +49,7 @@
 		6B86862135077611089E1B44580DD595 /* HorizontalList.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HorizontalList.swift; path = HorizontalList/Classes/HorizontalList.swift; sourceTree = "<group>"; };
 		74564771F8AE205667737F35D7AF515B /* HorizontalList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = HorizontalList.debug.xcconfig; sourceTree = "<group>"; };
 		76020A90FE8764976EE66EBC06B0E8FE /* Pods-HorizontalList_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HorizontalList_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		824E11E5288FC78300953EEB /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		8252A411285C9AB20041E2FA /* ScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollView.swift; path = HorizontalList/Classes/ScrollView.swift; sourceTree = "<group>"; };
 		83CA019D21AC6F7A7884F4CD4529BEA9 /* HorizontalList.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = HorizontalList.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9222564324911C7B009A698D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.5.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
@@ -87,6 +89,7 @@
 		0AFB79D721882053F8693034290E5A56 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				824E11E5288FC78300953EEB /* View.swift */,
 				B499CECC74013B62707EBC30A8FA140D /* Clamped.swift */,
 				1D903D61AF186C4A28A4D5A14F11375E /* PreferenceSetterView.swift */,
 			);
@@ -325,6 +328,7 @@
 				CF384F576F8DDCBA796874E20A22F618 /* HorizontalList.swift in Sources */,
 				B85A6AEAAF2F3B7B55DFBC7D49F94DBD /* HorizontalListModel.swift in Sources */,
 				DD28F2B25346EAFD2731E54814EBB5B2 /* PreferenceSetterView.swift in Sources */,
+				824E11E6288FC78300953EEB /* View.swift in Sources */,
 				8252A412285C9AB20041E2FA /* ScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
