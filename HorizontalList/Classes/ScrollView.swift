@@ -46,6 +46,7 @@ public struct ObservableScrollView<Content>: View where Content : View {
                         .preference(key: ScrollOffsetPreferenceKey.self, value: CGPoint(x: offsetX, y: offsetY))
                 })
         }
+        .edgesIgnoringSafeArea(.vertical)
         .coordinateSpace(name: scrollSpace)
     }
 }
