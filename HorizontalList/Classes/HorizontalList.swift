@@ -24,6 +24,7 @@ public struct HList<Content, Data> : View where Content : View, Data: RandomAcce
     
     // MARK: - Properties
     
+    @Environment(\.layoutDirection) private var direction
     private let data: [Data.Element]
     private let itemContent: (Data.Element) -> Content
     private let model = HorizontalListModel<Content>()
@@ -90,7 +91,7 @@ public struct HList<Content, Data> : View where Content : View, Data: RandomAcce
                                 updateContentSize()
                                 updateVisibleIndices()
                             }
-                            .rotation3DEffectForRightToLeftLayoutDirection()
+                            .rotation3DEffectForRightToLeftLayoutDirection(for: direction )
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

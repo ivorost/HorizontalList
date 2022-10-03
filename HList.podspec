@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'HList'
-  s.version          = '1.2.0'
+  s.version          = '1.3.0'
   s.summary          = 'A container that presents horizontal scrollable view.'
 
 # This description is used to generate tags and improve search results.

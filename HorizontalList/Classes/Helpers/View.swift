@@ -8,9 +8,8 @@
 import SwiftUI
 
 extension View {
-    public func rotation3DEffectForRightToLeftLayoutDirection() -> some View {
-        if let language = Locale.current.languageCode,
-           Locale.characterDirection(forLanguage: language) == .rightToLeft {
+    public func rotation3DEffectForRightToLeftLayoutDirection(for direction: LayoutDirection) -> some View {
+        if direction == .rightToLeft {
             return self.rotation3DEffect(Angle(degrees: 180),
                                          axis: (x: CGFloat(0),
                                                 y: CGFloat(10),
